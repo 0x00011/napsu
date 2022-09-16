@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./style.css">
+	<script src="./main.js" defer></script>
+	<title>Napsu</title>
+</head>
+<body>
+	<a href="https://github.com/0x00011/napsu">
+		<div class="logo">
+			<img src="./assets/napsubeta_logo.png" alt="logo">
+		</div>
+	</a>
+
+	<div class="hud">
+		<div class="hud-item level">
+			<h1 class="hud-main-text" id="score">1</h1>
+		</div>
+
+		<div class="state">
+			<div class="hud-item">
+				<div class="progress-bar" id="hunger-bar">
+					<div class="progress-bar-fill" id="hunger-bar-fill"></div>
+				</div>
+				<p class="hud-prefix">Nälkä</p>
+				
+				<div class="progress-bar" id="thirst-bar">
+					<div class="progress-bar-fill" id="thirst-bar-fill"></div>
+				</div>
+				<p class="hud-prefix">Janoisuus</p>
+			</div>
+		</div>
+	</div>
+
+	<div id="napsu" class="napsu">
+		<div class="speech"></div>
+	</div>
+	
+	<div class="bushes">
+		<div id="bush-1" class="bush-type-1"></div>
+		<div id="bush-2" class="bush-type-1"></div>
+		<div id="bush-3" class="bush-type-1"></div>
+		<div id="bush-4" class="bush-type-1"></div>
+	</div>
+
+	<div class="tasks">
+		<div class="well"></div>
+		<div class="bench"></div>
+	</div>
+
+	<div class="borders">
+		<div class="border" id="border-1"></div>
+		<div class="border" id="border-2"></div>
+	</div>
+
+	<div class="farm" id="farm-state-1"></div>
+
+	<div class="trees">
+		<div id="tree-1"></div>
+	</div>
+
+	<div class="ground"></div>
+</body>
+</html>
