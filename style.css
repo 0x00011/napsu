@@ -105,7 +105,7 @@ html, body {
 	width: 64px;
 	height: 64px;
 	margin: auto;
-	background-image: url(../assets/sprites/Sprite-0001.png);
+	background-image: url(./assets/sprites/Sprite-0001.png);
 	background-position: 0 0;
 	background-size: 512px 64px;
 	bottom: 27.5px;
