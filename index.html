@@ -5,7 +5,13 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="./style.css">
-	<script src="./main.js" defer></script>
+	<script src="./managers/game/gameManager.js" defer></script>
+	<script src="./managers/game/farmManager.js" defer></script>
+	<script src="./managers/game/activityManager.js" defer></script>
+	<script src="./managers/game/inventoryManager.js" defer></script>
+	<script src="./managers/napsu/movementManager.js" defer></script>
+	<script src="./managers/napsu/animationManager.js" defer></script>
+	<script src="./managers/napsu/bubbleManager.js" defer></script>
 	<title>Napsu</title>
 </head>
 <body>
@@ -14,6 +20,29 @@
 			<img src="./assets/napsubeta_logo.png" alt="logo">
 		</div>
 	</a>
+
+	<div class="inventory">
+		<div class="inventory-footer">
+			Tavaraluettelo
+			<svg id="closeInventory" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+		</div>
+
+		<div class="inventory-sides">
+			<div class="inventory-side">
+				<div class="inventory-header">
+					<h2 class="inventory-title">Reppu</h2>
+				</div>
+				<div class="inventory-content inventory-backpack"></div>
+			</div>
+	
+			<div class="inventory-side inventory-chest-side chest-nearby">
+				<div class="inventory-header">
+					<h2 class="inventory-title">Arkku</h2>
+				</div>
+				<div class="inventory-content inventory-chest"></div>
+			</div>
+		</div>
+	</div>
 
 	<div class="hud">
 		<div class="hud-item level">
@@ -49,7 +78,9 @@
 	<div class="tasks">
 		<div class="well"></div>
 		<div class="bench"></div>
+		<div class="chest"></div>
 	</div>
+
 
 	<div class="borders">
 		<div class="border" id="border-1"></div>
@@ -60,6 +91,9 @@
 
 	<div class="trees">
 		<div id="tree-1"></div>
+		<div id="tree-2"></div>
+		<div id="tree-3"></div>
+		<div id="tree-4"></div>
 	</div>
 
 	<div class="ground"></div>
