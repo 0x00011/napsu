@@ -32,6 +32,7 @@ const spawnLocations = {
  * @returns void
  */
 function switchMap(map, spawnX) {
+	if(activeMap === map) return;
 	console.log(activeMap, map);
 	document.querySelector(`.map-${activeMap}`).classList.remove('active');
 	document.querySelector(`.map-${map}`).classList.add('active');
@@ -46,8 +47,12 @@ function switchMap(map, spawnX) {
  */
 function handleSignActivity(target) {
 	if(target === 'home') {
+		stopSound("current", 1000);
 		switchMap('home', spawnLocations[activeMap][target]);
+		playSound("ambient-1", false);
 	} else if(target === 'market') {
+		stopSound("current", 1000);
 		switchMap('market', spawnLocations[activeMap][target]);
+		playSound("ambient-2", false);
 	}
 }

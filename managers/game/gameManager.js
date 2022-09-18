@@ -50,7 +50,7 @@ const lang = {
 
 var napsuState = {
 	level: 1,
-	devMode: true
+	devMode: false
 }
 var keysPressed = { a: false, w: false, s: false, d: false };
 var lastDirection = '';
@@ -207,7 +207,7 @@ window.onkeyup = function(e) {
 window.onkeydown = function(e) {
 	if(e.key == 'e') triggerActivity();
 	if(e.key == 'g') toggleInventory();
-	if(e.key == 'ArrowDown') chest.classList.toggle('chest-open');
+	if(e.key == 'ArrowDown' && napsuState.devMode) chest.classList.toggle('chest-open');
 	keysPressed[e.key] = true;
 }
 
@@ -232,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	updateInventory();
 	initItemListener();
 	addClickListeners();
+	playSound('ambient-1', true);
 
 	setInterval(() => {
 		moveNapsu();

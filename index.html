@@ -11,6 +11,7 @@
 	<script src="./managers/game/activityManager.js" defer></script>
 	<script src="./managers/game/inventoryManager.js" defer></script>
 	<script src="./managers/game/mapManager.js" defer></script>
+	<script src="./managers/game/musicManager.js" defer></script>
 	<script src="./managers/napsu/movementManager.js" defer></script>
 	<script src="./managers/napsu/animationManager.js" defer></script>
 	<script src="./managers/napsu/bubbleManager.js" defer></script>
@@ -19,6 +20,11 @@
 	<title>Napsu</title>
 </head>
 <body>
+	<!-- hidden audio controls -->
+	<audio id="audio" name="ambient-1" src="./assets/audio/ambient-1.mp3"></audio>
+	<audio id="audio" name="ambient-2" src="./assets/audio/ambient-2.mp3"></audio>
+	<audio id="audio" name="ambient-3" src="./assets/audio/ambient-3.mp3"></audio>
+
 	<a href="https://github.com/0x00011/napsu">
 		<div class="logo">
 			<img src="./assets/napsubeta_logo.png" alt="logo">
@@ -107,8 +113,14 @@
 			<div id="bush-4" class="bush-type-1"></div>
 		</div>
 
+		<div class="props">
+			<div class="woods"></div>
+		</div>
+
 		<div class="sign sign-market"></div>
 		<div class="board"></div>
+
+		<div id="stall-1" class="market-stall"></div>
 	</div>
 
 	<div class="ground"></div>
