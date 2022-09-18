@@ -28,12 +28,6 @@ var inventories = {
 		"name": "Arkku",
 		"maxitems": 15,
 		"items": {
-			"lehtipihvi": {
-				"icon": "lehtipihvi.png",
-				"name": "AxUn lehtipihvi",
-				"description": "Uskallatko syödä AxUn lehtipihvin ja kärsiä seuraamuksista?",
-				"count": 1,
-			},
 			"tomato": {
 				"icon": "tomato.png",
 				"name": "Tomaatti",
