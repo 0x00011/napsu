@@ -37,11 +37,32 @@ var inventories = {
 			"tomato": {
 				"icon": "tomato.png",
 				"name": "Tomaatti",
-				"description": "Tomaatit eivät ole kovin täyttäviä, mutta voit syödä niitä nälän iskiessä.",
+				"description": "Tomaatit ovat hyvä myyntiväline. Niistä maksetaan torilla hyvä hinta.",
 				"count": 4
-			}			
+			},
+			"cornseeds": {
+				"icon": "cornseeds.png",
+				"name": "Maissin siemeniä",
+				"description": "Siemenpussin avulla voit kasvattaa pellollasi yhden satsin omaa viljelystäsi.",
+				"count": 1
+			}	
 		}
 	}
+}
+
+
+
+const availableItems = {
+	"corn": {
+		"itemIcon": "corn.png",
+		"itemName": "Maissi",
+		"itemDescription": "Maissi on hyvä vilja syötäväksi tai myytäväksi, jota voit viljellä pellollasi."
+	},
+	"tomato": {
+		"itemIcon": "tomato.png",
+		"itemName": "Tomaatti",
+		"itemdescription": "Tomaatit ovat hyvä myyntiväline. Niistä maksetaan torilla hyvä hinta."
+	},
 }
 
 
@@ -51,13 +72,12 @@ var inventories = {
  * @name addItemToInventory
  * @param {string} inventoryId
  * @param {string} itemId
- * @param {itemName} itemName
- * @param {itemDescription} itemDescription
  * @param {itemCount} itemCount
- * @param {itemIcon} itemIcon
  * @returns void
  */
-function addItemToInventory(inventoryId, itemId, itemName, itemDescription, itemCount, itemIcon) {
+function addItemToInventory(inventoryId, itemId, itemCount) {
+	const { itemIcon, itemName, itemDescription } = availableItems[itemId];
+	
 	if(inventories[inventoryId].items[itemId] == undefined) {
 		inventories[inventoryId].items[itemId] = {
 			"icon": itemIcon,
@@ -167,6 +187,32 @@ function createItemElement(itemId, item) {
 }
 
 
+
+/**
+ * Update inventory data to local storage
+ * @name updateInventoryStorage
+ * @returns void
+ */
+function updateInventoryStorage() {
+	localStorage.setItem('inventories', JSON.stringify(inventories));
+}
+
+
+/**
+ * Fetch inventory data from local storage
+ * @name fetchInventoryStorage
+ * @returns void
+ */
+function fetchInventoryStorage() {
+	if(napsuState.devMode) return;
+	
+	const storage = localStorage.getItem('inventories');
+	if(storage == null) return inventories;
+	inventories = JSON.parse(storage);
+}
+
+
+
 /**
  * Add item element to it's type-inventory
  * @param {string} type 
@@ -194,6 +240,7 @@ function clearInventory() {
  */
 function updateInventory() {
 	clearInventory();
+	updateInventoryStorage();
 
 	for(const [id, inventory] of Object.entries(inventories)) {
 		for(const [itemId, itemObject] of Object.entries(inventory.items)) {

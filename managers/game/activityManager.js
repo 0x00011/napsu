@@ -27,3 +27,22 @@ function handleBenchActivity() {
 	triggerAnimation('napsu-sleep', false);
 	clearBubble();
 }
+
+
+/**
+ * Function for handling board activity
+ * @name handleBoardActivity
+ * @returns void
+ */
+function handleBoardActivity() {
+	// Toggle board visibility
+	document.querySelector('.mission-popup').classList.toggle('active');
+}
+
+
+/**
+ * Function for toggling missoni popup visibility
+ */
+function toggleMissionPopup() {
+	document.querySelector('.mission-popup').classList.toggle('active');
+}

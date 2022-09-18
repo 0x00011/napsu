@@ -43,7 +43,7 @@ function updateAnimation(anim) {
 		setTimeout(() => {
 			napsu.classList.remove('napsu-up');
 			jumpCooldown = false;
-		}, 1000);
+		}, 900);
 	} else if (anim == 'punch') {
 		napsu.classList.add('napsu-punch');
 		setTimeout(() => {

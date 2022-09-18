@@ -5,13 +5,17 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="./style.css">
+
 	<script src="./managers/game/gameManager.js" defer></script>
 	<script src="./managers/game/farmManager.js" defer></script>
 	<script src="./managers/game/activityManager.js" defer></script>
 	<script src="./managers/game/inventoryManager.js" defer></script>
+	<script src="./managers/game/mapManager.js" defer></script>
 	<script src="./managers/napsu/movementManager.js" defer></script>
 	<script src="./managers/napsu/animationManager.js" defer></script>
 	<script src="./managers/napsu/bubbleManager.js" defer></script>
+	<script src="./managers/napsu/stateManager.js" defer></script>
+
 	<title>Napsu</title>
 </head>
 <body>
@@ -46,54 +50,65 @@
 
 	<div class="hud">
 		<div class="hud-item level">
-			<h1 class="hud-main-text" id="score">1</h1>
+			<h1 class="hud-main-text" id="napsu-level">1</h1>
 		</div>
+	</div>
 
-		<div class="state">
-			<div class="hud-item">
-				<div class="progress-bar" id="hunger-bar">
-					<div class="progress-bar-fill" id="hunger-bar-fill"></div>
-				</div>
-				<p class="hud-prefix">Nälkä</p>
-				
-				<div class="progress-bar" id="thirst-bar">
-					<div class="progress-bar-fill" id="thirst-bar-fill"></div>
-				</div>
-				<p class="hud-prefix">Janoisuus</p>
-			</div>
+	<div class="market mission-popup">
+		<div class="arrow-back" id="close-mission-board">
+			<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
 		</div>
+		<div class="mission-info">
+			<div class="mission-text">
+				Hei. Minulla on tehtävä juuri sinulle.<br>Hanki minulle 5 omenaa ja 5 porkkanaa ja tuo ne minulle. Kiitos.<br><br>Saat palkkioksi 10 kolikkoa.<br>Tuo tavarat minulle torin perälle.
+			</div>
+		</div>	
 	</div>
 
 	<div id="napsu" class="napsu">
 		<div class="speech"></div>
 	</div>
 	
-	<div class="bushes">
-		<div id="bush-1" class="bush-type-1"></div>
-		<div id="bush-2" class="bush-type-1"></div>
-		<div id="bush-3" class="bush-type-1"></div>
-		<div id="bush-4" class="bush-type-1"></div>
+	<div class="map map-home active">
+		<div class="bushes">
+			<div id="bush-1" class="bush-type-1"></div>
+			<div id="bush-2" class="bush-type-1"></div>
+			<div id="bush-3" class="bush-type-1"></div>
+			<div id="bush-4" class="bush-type-1"></div>
+		</div>
+	
+		<div class="tasks">
+			<div class="well"></div>
+			<div class="bench"></div>
+			<div class="chest"></div>
+		</div>
+	
+		<div class="borders">
+			<div class="border" id="border-1"></div>
+			<div class="border" id="border-2"></div>
+		</div>
+	
+		<div class="farm" id="farm-state-1"></div>
+		<div class="sign sign-home"></div>
+	
+		<div class="trees">
+			<div id="tree-1"></div>
+			<div id="tree-2"></div>
+			<div id="tree-3"></div>
+			<div id="tree-4"></div>
+		</div>
 	</div>
 
-	<div class="tasks">
-		<div class="well"></div>
-		<div class="bench"></div>
-		<div class="chest"></div>
-	</div>
+	<div class="map map-market">
+		<div class="bushes">
+			<div id="bush-1" class="bush-type-1"></div>
+			<div id="bush-2" class="bush-type-1"></div>
+			<div id="bush-3" class="bush-type-1"></div>
+			<div id="bush-4" class="bush-type-1"></div>
+		</div>
 
-
-	<div class="borders">
-		<div class="border" id="border-1"></div>
-		<div class="border" id="border-2"></div>
-	</div>
-
-	<div class="farm" id="farm-state-1"></div>
-
-	<div class="trees">
-		<div id="tree-1"></div>
-		<div id="tree-2"></div>
-		<div id="tree-3"></div>
-		<div id="tree-4"></div>
+		<div class="sign sign-market"></div>
+		<div class="board"></div>
 	</div>
 
 	<div class="ground"></div>

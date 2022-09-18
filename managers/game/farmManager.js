@@ -32,10 +32,14 @@ function updateFarmGrowth() {
  */
 function handleFarmActivity() {
 	if(farmSet == false && growth == 0) {
-		farmSet = true; allowMove = false;
-		farmCooldown = 1000;
-		triggerAnimation('napsu-farm', 2000, true);
-		clearBubble();
+		if(farmCooldown !== 0) return;
+		if(getInventoryItemCount('backpack', 'cornseeds') > 0) {
+			farmSet = true; allowMove = false;
+			farmCooldown = 1000;
+			triggerAnimation('napsu-farm', 3500, true);
+		} else {
+			setBubble(lang["farm"]["no-seeds"], true);
+		}
 	}
 	
 	else if(farmSet == true && growth >= 99) {
@@ -48,8 +52,10 @@ function handleFarmActivity() {
 			farmSet = false;
 			napsu.classList.remove("napsu-harvest");
 			farm.id = 'farm-state-1';
-			clearBubble();
-		}, 2000);
+
+			// Add item corn to inventory
+			addItemToInventory('backpack', 'corn', Math.round(Math.random() * 2 + 1));
+		}, 3500);
 	}
 }
 

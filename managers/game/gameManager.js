@@ -13,6 +13,7 @@
  * 	- adjust farm growth
  * 	- fix item swapping 
  * 	- add option to choose how many items to move
+ * 	- Better way of handling activity positions
  */
 
 const napsu = document.querySelector('#napsu');
@@ -24,6 +25,10 @@ const benchPos = document.querySelector('.bench').getBoundingClientRect();
 const borderPos = document.querySelector('#border-2').getBoundingClientRect();
 const chest = document.querySelector('.chest');
 const chestPos = chest.getBoundingClientRect();
+const signHomePos = document.querySelector('.sign-home').getBoundingClientRect();
+const signMarketPos = document.querySelector('.sign-market').getBoundingClientRect();
+const boardPos = document.querySelector('.board').getBoundingClientRect();
+
 const lang = {
 	"well": {
 		"press-to-drink": "Paina <span>E</span> juodaksesi vettä kaivosta." 
@@ -32,17 +37,21 @@ const lang = {
 		"press-to-lay": "Paina <span>E</span> mennäksesi lepäämään penkille."
 	},
 	"farm": {
-		"press-to-farm": "Paina <span>E</span> aloittaaksesi viljelyn.",
-		"farming-in-progress": "Viljely on käynnissä. Viljelys on edennyt {0}%.",
-		"press-to-harvest": "Paina <span>E</span> kerätäksesi sadon.",
-		"farm-cooldown": "Viljelit juuri, joten sinun on odotettava hetki ennen uuden viljelyn aloittamista."
+		"press-to-farm": "Paina <span>E</span> aloittaaksesi maissiviljelyn.",
+		"farming-in-progress": "Maissin viljely on käynnissä. Viljelys on edennyt {0}%.",
+		"press-to-harvest": "Paina <span>E</span> kerätäksesi maissisadon.",
+		"farm-cooldown": "Viljelit juuri, joten sinun on odotettava hetki ennen uuden maissiviljelyn aloittamista.",
+		"no-seeds": "Sinulla ei ole viljelyyn tarvittavia maissin siemeniä."
 	},
 	"border": {
 		"not-allowed": "Täällä on portti. Emme pääse ainakaan vielä pidemmälle."
 	}
 }
 
-var napsuState = { devMode: true }
+var napsuState = {
+	level: 1,
+	devMode: true
+}
 var keysPressed = { a: false, w: false, s: false, d: false };
 var lastDirection = '';
 var jumpCooldown = false;
@@ -51,6 +60,7 @@ var growth = 0;
 var farmSet = false;
 var farmCooldown = 0;
 var allowMove = true;
+var activeMap = "home";
 
 
 /**
@@ -60,10 +70,31 @@ var allowMove = true;
 function triggerActivity() {
 	const activity = checkRange();
 	if(inventoryOpen && activity != "chest") return;
-	if(activity == "well") return handleWellActivity();
-	if(activity == "bench") return handleBenchActivity();
-	if(activity == "farm") return handleFarmActivity();
-	if(activity == "chest") return toggleInventory();
+
+	if(activeMap == "home") {
+		if(activity == "well") return handleWellActivity();
+		if(activity == "bench") return handleBenchActivity();
+		if(activity == "farm") return handleFarmActivity();
+		if(activity == "chest") return toggleInventory();
+		if(activity == "sign_toMarket") return handleSignActivity("market");
+	}
+
+	if(activeMap == "market") {
+		if(activity == "sign_toHome") return handleSignActivity("home");
+		if(activity == "board") return handleBoardActivity();
+	}
+}
+
+
+/**
+ * Function for adding click listeners for specific element
+ * @name addClickListeners
+ * @returns void
+ */
+function addClickListeners() {
+	document.querySelector('#close-mission-board').addEventListener('click', () => {
+		toggleMissionPopup();
+	});
 }
 
 
@@ -81,35 +112,58 @@ function checkRange() {
 		"bench": Boolean(napsuPos.left > (benchPos.left - 20) && napsuPos.right < (benchPos.right + 20)),
 		"farm": Boolean(napsuPos.left > (farmPos.left - 20) && napsuPos.right < (farmPos.right + 20)),
 		"chest": Boolean(napsuPos.left > (chestPos.left - 20) && napsuPos.right < (chestPos.right + 20)),
+		"signHome": Boolean(napsuPos.left > (signHomePos.left - 20) && napsuPos.right < (signHomePos.right + 40)),
+		"signMarket": Boolean(napsuPos.left > (signMarketPos.left - 20) && napsuPos.right < (signMarketPos.right + 40)),
+		"board": Boolean(napsuPos.left > (boardPos.left - 20) && napsuPos.right < (boardPos.right + 20)),
 	}
 
 	handleChestTooltip(rangeValidation["chest"]);
 
-	if (rangeValidation["well"] && justDrinked === false) {
-		setBubble(lang["well"]["press-to-drink"]);
-		return "well";
-	}
+	if(activeMap == "home") {
+		if(rangeValidation["well"] && justDrinked === false) {
+			setBubble(lang["well"]["press-to-drink"]);
+			return "well";
+		}
+		
+		if(rangeValidation["bench"]) {
+			if(napsu.classList.contains('napsu-sleep')) return "bench";
+			setBubble(lang["bench"]["press-to-lay"]);
+			return "bench";
+		}
 	
-	if(rangeValidation["bench"]) {
-		if(napsu.classList.contains('napsu-sleep')) return "bench";
-		setBubble(lang["bench"]["press-to-lay"]);
-		return "bench";
+		if(rangeValidation["farm"]) {
+			handleFarmTooltip();
+			return "farm";
+		}
+	
+		if(rangeValidation["chest"]) {
+			setBubble("Paina <span>E</span> avataksesi arkun.");
+			return "chest";
+		}
+	
+		if(rangeValidation["signHome"]) {
+			setBubble("Paina <span>E</span> lähteäksesi torille.", true);
+			return "sign_toMarket";
+		}
+		
+		if(napsuPos.left > (borderPos.left - 100)) {
+			setBubble(lang["border"]["not-allowed"], false, true);
+			return "border";
+		}
 	}
 
-	if(rangeValidation["farm"]) {
-		handleFarmTooltip();
-		return "farm";
+	if(activeMap == "market") {
+		if(rangeValidation["signMarket"]) {
+			setBubble("Paina <span>E</span> palataksesi kotiin.", true);
+			return "sign_toHome";
+		}
+
+		if(rangeValidation["board"]) {
+			setBubble("Paina <span>E</span> lukeaksesi ilmoitustaulun.", true);
+			return "board";
+		}
 	}
 
-	if(rangeValidation["chest"]) {
-		setBubble("Paina <span>E</span> avataksesi arkun.");
-		return "chest";
-	}
-	
-	if(napsuPos.left > (borderPos.left - 100)) {
-		setBubble(lang["border"]["not-allowed"], false, true);
-		return "border";
-	}
 	
 	removeClasses();
 }
@@ -174,8 +228,10 @@ String.prototype.format = function() {
 
 // Initialize game when page DOM content has been loaded
 document.addEventListener('DOMContentLoaded', () => {
+	fetchInventoryStorage();
 	updateInventory();
 	initItemListener();
+	addClickListeners();
 
 	setInterval(() => {
 		moveNapsu();
